@@ -10,16 +10,12 @@ import UIKit
 import RealmSwift
 import UserNotifications
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
+class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UIPickerViewDelegate, UIPickerViewDataSource{
 
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var searchBar: UISearchBar!
-    /*
-    @IBAction func tapSearchButton(_ sender: Any) {
-        searchBar.isHidden = false
-    }
-    */
-    //var taskArray: Results<Task>!
+    @IBOutlet weak var categoryPicker: UIPickerView!
+    
+    var categoryArray: [String] = []
     
     //Realmインスタンスを取得する
     let realm = try! Realm()
@@ -36,7 +32,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         tableView.delegate = self
         tableView.dataSource = self
-        searchBar.delegate = self
+        categoryPicker.delegate = self
+        
+        updateCategory()
         
 //        searchBar.isHidden = true
         
@@ -71,6 +69,57 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
     }
     
+    //UIPickerのプロトコル
+    //表示する列数
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    //表示するアイテムの数
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return categoryArray.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        // 表示する文字列を返す
+        return categoryArray[row]
+    }
+    
+    //カテゴリー検索
+    //pickerViewが操作された時
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        // 選択時の処理
+        print("デバッグ： \(self.categoryPicker.selectedRow(inComponent: 0))")
+        let searchNumber = self.categoryPicker.selectedRow(inComponent: 0)
+        //print("デバッグ：　\(searchCategory)")
+        //検索
+         if searchNumber == 0 {
+         taskArray = try! Realm().objects(Task.self).sorted(byKeyPath: "date", ascending: false)
+         }else{
+         taskArray = try! Realm().objects(Task.self).filter("categoryId == %@", searchNumber - 1).sorted(byKeyPath: "date", ascending: false)
+         
+         }
+        
+        //完全一致は"category == %@"
+        
+        //検索をかけてリロード
+        tableView.reloadData()
+    }
+    
+    //カテゴリーの更新
+    func updateCategory(){
+        print("カテゴリーの更新")
+        //print(categoryArray)
+        categoryArray = ["ALL"]
+        print(categoryArray)
+        let categoryDataAll = realm.objects(Category.self)
+        print(categoryDataAll)
+        //var categoryArray_: [String] = []
+        for item in categoryDataAll {
+            print("デバッグ：　\(item.name)")
+            self.categoryArray.append(String(item.name))
+        }
+        print(categoryArray)
+    }
     //UITableViewDataSourceのプロトコルメソッドを記述
     //データの数を返すメソッド
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
@@ -143,10 +192,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     //入力画面から戻ってきた時にTableViewを更新させる
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        updateCategory()
+        categoryPicker.reloadAllComponents()
         tableView.reloadData()
     }
 
     //searchBarの設定
+    /*  メモ：サーチバーは使っていない
     //テキスト変更時に呼ばれる
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         //検索する
@@ -171,6 +223,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         tableView.reloadData()
         
     }
+ */
     
     
 }
