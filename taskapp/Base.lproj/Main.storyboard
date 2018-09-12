@@ -18,8 +18,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="GYg-IM-aOn">
+                                <rect key="frame" x="0.0" y="64" width="320" height="56"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </searchBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="meZ-xI-bb2">
-                                <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                                <rect key="frame" x="0.0" y="149" width="320" height="419"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" textLabel="hbL-Ds-pgB" detailTextLabel="t5N-fN-Asi" style="IBUITableViewCellStyleSubtitle" id="7Z1-lp-JHk">
@@ -51,10 +55,13 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="meZ-xI-bb2" secondAttribute="trailing" id="6pn-T8-zRy"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="meZ-xI-bb2" secondAttribute="bottom" id="9Dn-iI-bbJ"/>
-                            <constraint firstItem="meZ-xI-bb2" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="pvG-DH-iO8"/>
-                            <constraint firstItem="meZ-xI-bb2" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="xyv-bf-bQY"/>
+                            <constraint firstItem="GYg-IM-aOn" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="2mO-Po-uXl"/>
+                            <constraint firstItem="meZ-xI-bb2" firstAttribute="top" secondItem="GYg-IM-aOn" secondAttribute="bottom" constant="29" id="DIi-GZ-UGs"/>
+                            <constraint firstItem="GYg-IM-aOn" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Ju8-fY-cw4"/>
+                            <constraint firstItem="meZ-xI-bb2" firstAttribute="leading" secondItem="GYg-IM-aOn" secondAttribute="leading" id="bVt-3Z-C8J"/>
+                            <constraint firstItem="meZ-xI-bb2" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="dR9-aQ-6bB"/>
+                            <constraint firstItem="meZ-xI-bb2" firstAttribute="trailing" secondItem="GYg-IM-aOn" secondAttribute="trailing" id="hBa-GE-TGZ"/>
+                            <constraint firstItem="GYg-IM-aOn" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="nid-Ms-LmH"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -66,6 +73,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="searchBar" destination="GYg-IM-aOn" id="ekN-av-ueU"/>
                         <outlet property="tableView" destination="meZ-xI-bb2" id="9g5-OO-4TL"/>
                         <segue destination="RzM-WA-ocH" kind="show" identifier="cellSegue" id="aic-0h-WXN"/>
                     </connections>

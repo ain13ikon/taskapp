@@ -10,13 +10,20 @@ import UIKit
 import RealmSwift
 import UserNotifications
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
 
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var searchBar: UISearchBar!
+    /*
+    @IBAction func tapSearchButton(_ sender: Any) {
+        searchBar.isHidden = false
+    }
+    */
+    //var taskArray: Results<Task>!
     
     //Realmインスタンスを取得する
     let realm = try! Realm()
-    
+
     //DB内のタスクが格納されるリスト
     //日付が近い順でソート：降順
     //以降内容をアップデートするとリスト内は自動的に更新される。
@@ -29,6 +36,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         tableView.delegate = self
         tableView.dataSource = self
+        searchBar.delegate = self
+        
+//        searchBar.isHidden = true
+        
+        print("デバッグ：　デバッグの表示確認")
     }
 
     override func didReceiveMemoryWarning() {
@@ -42,6 +54,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         if segue.identifier == "cellSegue"{
             print("デバッグ：　セルのタップから移動します")
             let indexPath = self.tableView.indexPathForSelectedRow
+            //メモ：遷移先に情報を渡している
             inputViewController.task = taskArray[indexPath!.row]
         }else{
             print("デバッグ：　＋から移動します")
@@ -52,7 +65,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             if allTasks.count != 0 {
                 task.id = allTasks.max(ofProperty: "id")! + 1
             }
-            
+            //メモ：遷移先に情報を渡している
             inputViewController.task = task
         }
     }
@@ -130,9 +143,30 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         tableView.reloadData()
     }
 
+    //searchBarの設定
+    //テキスト変更時に呼ばれる
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        //検索する
+        //searchItems(searchText: searchText)
+        print("デバッグ：サーチテキストが変更されました")
+        print("デバッグ：　\(searchText)")
+        //searchCategory(searchText: searchText)
+        
+        //検索
+        if searchText == "" {
+            taskArray = try! Realm().objects(Task.self).sorted(byKeyPath: "date", ascending: false)
+        }else{
+            taskArray = try! Realm().objects(Task.self).filter("category == %@", searchText).sorted(byKeyPath: "date", ascending: false)
+            
+        }
+        
+        //完全一致は"category == %@"
+
+        //検索をかけてリロード
+        tableView.reloadData()
+        
+    }
     
-
-
-
+    
 }
 

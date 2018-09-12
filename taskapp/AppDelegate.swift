@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         //ユーザーに通知の許可を求める
         let center = UNUserNotificationCenter.current()
-        center.requestAuthorization(options: [.alert, .sound]){
+        center.requestAuthorization(options: [UNAuthorizationOptions.alert, UNAuthorizationOptions.sound]){
             (granted, error) in
         }
         

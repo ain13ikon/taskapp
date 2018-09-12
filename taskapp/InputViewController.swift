@@ -22,6 +22,7 @@ class InputViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+    
 
         // Do any additional setup after loading the view.
         
@@ -29,6 +30,7 @@ class InputViewController: UIViewController {
         let tapGesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         self.view.addGestureRecognizer(tapGesture)
         
+        //メモ：taskの中身は遷移時に渡されている
         categoryTextField.text = task.category
         titleTextField.text = task.title
         contentsTextView.text = task.contents
