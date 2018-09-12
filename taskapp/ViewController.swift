@@ -41,6 +41,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 //        searchBar.isHidden = true
         
         print("デバッグ：　デバッグの表示確認")
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -92,7 +93,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         formatter.dateFormat = "yyyy-MM-dd HH:mm"
         
         let dateString: String = formatter.string(from: task.date)
-        cell.detailTextLabel?.text = dateString + "    カテゴリー："
+        let category = realm.objects(Category.self)[task.categoryId].name
+        print(category)
+        cell.detailTextLabel?.text = dateString + "    カテゴリー：\(category)"
         
         return cell
     }

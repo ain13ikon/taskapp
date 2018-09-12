@@ -7,9 +7,14 @@
 //
 
 import UIKit
+import RealmSwift
 
 class AddCategoryController: UIViewController {
+    
+    let realm = try! Realm()
+    let category = Category()
 
+    @IBOutlet weak var categoryField: UITextField!
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -21,6 +26,36 @@ class AddCategoryController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    override func viewWillDisappear(_ animated: Bool){
+        
+        if categoryField.text! == ""{
+            print("デバッグ：　空欄のため、登録しません")
+            return
+        }
+        let allTasks = realm.objects(Category.self)
+
+        //カテゴリーが被っていなかったら
+        if allTasks.filter("name == %@", categoryField.text!).count == 0 {
+            
+            if allTasks.count != 0 {
+                self.category.id = allTasks.max(ofProperty: "id")! + 1
+            }
+            
+            try! realm.write {
+                self.category.name = self.categoryField.text!
+                self.realm.add(self.category, update: true)
+            }
+            print("カテゴリーを新規登録しました")
+        }else{
+            print("カテゴリーが重複しています")
+        }
+        
+        super.viewWillDisappear(animated)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        print("戻ります")
+    }
 
     /*
     // MARK: - Navigation

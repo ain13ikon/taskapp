@@ -12,7 +12,8 @@ import UserNotifications
 
 class InputViewController: UIViewController,UIPickerViewDelegate, UIPickerViewDataSource {
     
-    var categoryData_ = ["食事", "書籍", "衣類"]
+//    var categoryData_ = ["食事", "書籍", "衣類", "交通費","その他"]
+    var categoryArray: [String] = []
 
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var contentsTextView: UITextView!
@@ -21,7 +22,9 @@ class InputViewController: UIViewController,UIPickerViewDelegate, UIPickerViewDa
     @IBOutlet weak var categoryPicker: UIPickerView!
     
     var task: Task!
+    //var category: Category!
     let realm = try! Realm()
+    
     
     //UIPickerのプロトコル
     //表示する列数
@@ -30,17 +33,17 @@ class InputViewController: UIViewController,UIPickerViewDelegate, UIPickerViewDa
     }
     //表示するアイテムの数
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return categoryData_.count
+        return categoryArray.count
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         // 表示する文字列を返す
-        return categoryData_[row]
+        return categoryArray[row]
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         // 選択時の処理
-        print("デバッグ： \(categoryData_[row])")
+        print("デバッグ： \(self.categoryPicker.selectedRow(inComponent: 0))")
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,15 +58,33 @@ class InputViewController: UIViewController,UIPickerViewDelegate, UIPickerViewDa
         let tapGesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         self.view.addGestureRecognizer(tapGesture)
         
+        updateCategory()
+        
         //入力済みのデータを表示
         //メモ：taskの中身は遷移時に渡されている
         //categoryTextField.text = task.category
-        categoryPicker.selectRow(1, inComponent: 0, animated: true)
+        categoryPicker.selectRow(task.categoryId, inComponent: 0, animated: true)
         titleTextField.text = task.title
         contentsTextView.text = task.contents
         datePicker.date = task.date
+        
+        
     }
     
+    func updateCategory(){
+        print("カテゴリーの更新")
+        //print(categoryArray)
+        categoryArray = []
+        print(categoryArray)
+        let categoryDataAll = realm.objects(Category.self)
+        print(categoryDataAll)
+        //var categoryArray_: [String] = []
+        for item in categoryDataAll {
+            print("デバッグ：　\(item.name)")
+            self.categoryArray.append(String(item.name))
+        }
+        print(categoryArray)
+    }
     @objc func dismissKeyboard(){
         //キーボードを閉じる
         view.endEditing(true)
@@ -80,6 +101,7 @@ class InputViewController: UIViewController,UIPickerViewDelegate, UIPickerViewDa
             self.task.title = self.titleTextField.text!
             self.task.contents = self.contentsTextView.text
             self.task.date = self.datePicker.date
+            self.task.categoryId = self.categoryPicker.selectedRow(inComponent: 0)
             self.realm.add(self.task, update: true)
         }
         
@@ -130,6 +152,14 @@ class InputViewController: UIViewController,UIPickerViewDelegate, UIPickerViewDa
         
     }
     
+    //入力画面から戻ってきた時にTableViewを更新させる
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        print("再読み込み")
+        updateCategory()
+        categoryPicker.reloadAllComponents()
+    }
+
     
     
 
