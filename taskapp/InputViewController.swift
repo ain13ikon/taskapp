@@ -10,28 +10,55 @@ import UIKit
 import RealmSwift
 import UserNotifications
 
-class InputViewController: UIViewController {
+class InputViewController: UIViewController,UIPickerViewDelegate, UIPickerViewDataSource {
+    
+    var categoryData_ = ["食事", "書籍", "衣類"]
 
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var contentsTextView: UITextView!
     @IBOutlet weak var datePicker: UIDatePicker!
-    @IBOutlet weak var categoryTextField: UITextField!
+//    @IBOutlet weak var categoryTextField: UITextField!
+    @IBOutlet weak var categoryPicker: UIPickerView!
     
     var task: Task!
     let realm = try! Realm()
     
+    //UIPickerのプロトコル
+    //表示する列数
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    //表示するアイテムの数
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return categoryData_.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        // 表示する文字列を返す
+        return categoryData_[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        // 選択時の処理
+        print("デバッグ： \(categoryData_[row])")
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
     
 
         // Do any additional setup after loading the view.
         
+        categoryPicker.delegate = self
+        categoryPicker.dataSource = self
+        
         //背景をタップしたらdismissKeyboardメソッドを呼ぶようにする
         let tapGesture: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         self.view.addGestureRecognizer(tapGesture)
         
+        //入力済みのデータを表示
         //メモ：taskの中身は遷移時に渡されている
-        categoryTextField.text = task.category
+        //categoryTextField.text = task.category
+        categoryPicker.selectRow(1, inComponent: 0, animated: true)
         titleTextField.text = task.title
         contentsTextView.text = task.contents
         datePicker.date = task.date
@@ -49,7 +76,7 @@ class InputViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool){
         try! realm.write {
-            self.task.category = self.categoryTextField.text!
+//            self.task.category = self.categoryTextField.text!
             self.task.title = self.titleTextField.text!
             self.task.contents = self.contentsTextView.text
             self.task.date = self.datePicker.date

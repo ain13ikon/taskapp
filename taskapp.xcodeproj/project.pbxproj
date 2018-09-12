@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		7111F4AB21421BAC0017221E /* InputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7111F4AA21421BAC0017221E /* InputViewController.swift */; };
+		71596134214896C000511207 /* AddCategoryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71596133214896C000511207 /* AddCategoryController.swift */; };
 		71907F742142490D00B4CA4D /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71907F732142490D00B4CA4D /* Task.swift */; };
 		71B2A57C21411BB3002A3B0A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B2A57B21411BB3002A3B0A /* AppDelegate.swift */; };
 		71B2A57E21411BB3002A3B0A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B2A57D21411BB3002A3B0A /* ViewController.swift */; };
@@ -19,6 +20,7 @@
 
 /* Begin PBXFileReference section */
 		7111F4AA21421BAC0017221E /* InputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputViewController.swift; sourceTree = "<group>"; };
+		71596133214896C000511207 /* AddCategoryController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryController.swift; sourceTree = "<group>"; };
 		71907F732142490D00B4CA4D /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 		71B2A57821411BB3002A3B0A /* taskapp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = taskapp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		71B2A57B21411BB3002A3B0A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -81,6 +83,7 @@
 				71B2A58721411BB5002A3B0A /* Info.plist */,
 				7111F4AA21421BAC0017221E /* InputViewController.swift */,
 				71907F732142490D00B4CA4D /* Task.swift */,
+				71596133214896C000511207 /* AddCategoryController.swift */,
 			);
 			path = taskapp;
 			sourceTree = "<group>";
@@ -210,6 +213,7 @@
 			files = (
 				71907F742142490D00B4CA4D /* Task.swift in Sources */,
 				7111F4AB21421BAC0017221E /* InputViewController.swift in Sources */,
+				71596134214896C000511207 /* AddCategoryController.swift in Sources */,
 				71B2A57E21411BB3002A3B0A /* ViewController.swift in Sources */,
 				71B2A57C21411BB3002A3B0A /* AppDelegate.swift in Sources */,
 			);

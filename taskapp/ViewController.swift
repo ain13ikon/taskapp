@@ -86,13 +86,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let task = taskArray[indexPath.row]
         //カテゴリーの表示
         //let category = task.category
-        cell.textLabel?.text = task.title //+ " カテゴリー：" + task.category
+        cell.textLabel?.text = task.title
         
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm"
         
         let dateString: String = formatter.string(from: task.date)
-        cell.detailTextLabel?.text = dateString + "    カテゴリー：" + task.category
+        cell.detailTextLabel?.text = dateString + "    カテゴリー："
         
         return cell
     }
@@ -153,12 +153,14 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         //searchCategory(searchText: searchText)
         
         //検索
+        /*
         if searchText == "" {
             taskArray = try! Realm().objects(Task.self).sorted(byKeyPath: "date", ascending: false)
         }else{
             taskArray = try! Realm().objects(Task.self).filter("category == %@", searchText).sorted(byKeyPath: "date", ascending: false)
             
         }
+        */
         
         //完全一致は"category == %@"
 
