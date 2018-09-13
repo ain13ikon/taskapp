@@ -27,8 +27,8 @@ class Task: Object {
     @objc dynamic var categoryId = 0
     
     /**
-        idをプライマリーキーとして設定
-    */
+     idをプライマリーキーとして設定
+     */
     override static func primaryKey() -> String? {
         return "id"
     }

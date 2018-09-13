@@ -11,7 +11,7 @@ import RealmSwift
 import UserNotifications
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UIPickerViewDelegate, UIPickerViewDataSource{
-
+    
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var categoryPicker: UIPickerView!
     
@@ -19,7 +19,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     //Realmインスタンスを取得する
     let realm = try! Realm()
-
+    
     //DB内のタスクが格納されるリスト
     //日付が近い順でソート：降順
     //以降内容をアップデートするとリスト内は自動的に更新される。
@@ -36,12 +36,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         updateCategory()
         
-//        searchBar.isHidden = true
+        //        searchBar.isHidden = true
         
         print("デバッグ：　デバッグの表示確認")
-
+        
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -92,12 +92,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let searchNumber = self.categoryPicker.selectedRow(inComponent: 0)
         //print("デバッグ：　\(searchCategory)")
         //検索
-         if searchNumber == 0 {
-         taskArray = try! Realm().objects(Task.self).sorted(byKeyPath: "date", ascending: false)
-         }else{
-         taskArray = try! Realm().objects(Task.self).filter("categoryId == %@", searchNumber - 1).sorted(byKeyPath: "date", ascending: false)
-         
-         }
+        if searchNumber == 0 {
+            taskArray = try! Realm().objects(Task.self).sorted(byKeyPath: "date", ascending: false)
+        }else{
+            taskArray = try! Realm().objects(Task.self).filter("categoryId == %@", searchNumber).sorted(byKeyPath: "date", ascending: false)
+            
+        }
         
         //完全一致は"category == %@"
         
@@ -142,7 +142,14 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         formatter.dateFormat = "yyyy-MM-dd HH:mm"
         
         let dateString: String = formatter.string(from: task.date)
-        let category = realm.objects(Category.self)[task.categoryId].name
+        var category = ""
+        if task.categoryId == 0 {
+            category = ""
+            print("未選択です")
+        }else{
+            category = realm.objects(Category.self)[task.categoryId - 1].name
+            print("選択されています")
+        }
         print(category)
         cell.detailTextLabel?.text = dateString + "    カテゴリー：\(category)"
         
@@ -196,34 +203,34 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         categoryPicker.reloadAllComponents()
         tableView.reloadData()
     }
-
+    
     //searchBarの設定
     /*  メモ：サーチバーは使っていない
-    //テキスト変更時に呼ばれる
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        //検索する
-        //searchItems(searchText: searchText)
-        print("デバッグ：サーチテキストが変更されました")
-        print("デバッグ：　\(searchText)")
-        //searchCategory(searchText: searchText)
-        
-        //検索
-        /*
-        if searchText == "" {
-            taskArray = try! Realm().objects(Task.self).sorted(byKeyPath: "date", ascending: false)
-        }else{
-            taskArray = try! Realm().objects(Task.self).filter("category == %@", searchText).sorted(byKeyPath: "date", ascending: false)
-            
-        }
-        */
-        
-        //完全一致は"category == %@"
-
-        //検索をかけてリロード
-        tableView.reloadData()
-        
-    }
- */
+     //テキスト変更時に呼ばれる
+     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+     //検索する
+     //searchItems(searchText: searchText)
+     print("デバッグ：サーチテキストが変更されました")
+     print("デバッグ：　\(searchText)")
+     //searchCategory(searchText: searchText)
+     
+     //検索
+     /*
+     if searchText == "" {
+     taskArray = try! Realm().objects(Task.self).sorted(byKeyPath: "date", ascending: false)
+     }else{
+     taskArray = try! Realm().objects(Task.self).filter("category == %@", searchText).sorted(byKeyPath: "date", ascending: false)
+     
+     }
+     */
+     
+     //完全一致は"category == %@"
+     
+     //検索をかけてリロード
+     tableView.reloadData()
+     
+     }
+     */
     
     
 }
