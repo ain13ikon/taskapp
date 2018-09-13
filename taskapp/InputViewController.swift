@@ -103,16 +103,6 @@ class InputViewController: UIViewController,UIPickerViewDelegate, UIPickerViewDa
             self.task.title = self.titleTextField.text!
             self.task.contents = self.contentsTextView.text
             self.task.date = self.datePicker.date
-            let category: Int? = self.categoryPicker.selectedRow(inComponent: 0)
-            print("デバッグ：　")
-            print(category)
-            
-            if category == Optional(0){
-                print("カテゴリーが選ばれていません")
-            }else{
-                print("カテゴリーを登録します222")
-                //self.task.categoryId = self.categoryPicker.selectedRow(inComponent: 0)
-            }
             self.task.categoryId = self.categoryPicker.selectedRow(inComponent: 0)
             self.realm.add(self.task, update: true)
             print("ok")
